@@ -1,0 +1,23 @@
+import jsforce from "jsforce";
+
+export default async function Page() {
+  const conn = new jsforce.Connection({
+    // you can change loginUrl to connect to sandbox or prerelease env.
+    // loginUrl : 'https://test.salesforce.com'
+  });
+
+  await conn.login(process.env.USERNAME!, process.env.PASSWORD!);
+
+  const result = await conn.query("SELECT Id, Name FROM Account LIMIT 15");
+
+  return (
+    <div>
+      Username Password Page
+      <ul className="list-disc list-inside">
+        {result.records.map((record) => (
+          <li key={record.Id}>{record.Name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
